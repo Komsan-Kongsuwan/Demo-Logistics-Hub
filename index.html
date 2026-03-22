@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo Logistics — Operations Hub</title>
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D02S84NQLE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-D02S84NQLE');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #f1f5f9;
+      --surface:   #ffffff;
+      --card:      #ffffff;
+      --card-alt:  #f8fafc;
+      --border:    rgba(0,0,0,0.08);
+      --amber:     #d97706;
+      --amber-dim: rgba(217,119,6,0.10);
+      --amber-glow:rgba(217,119,6,0.25);
+      --blue:      #0284c7;
+      --blue-dim:  rgba(2,132,199,0.10);
+      --green:     #059669;
+      --purple:    #7c3aed;
+      --text:      #1e293b;
+      --muted:     #94a3b8;
+      --dim:       #64748b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── GRID LINES BG ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(217,119,6,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(217,119,6,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── GLOW ORBS ── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+    }
+    .orb-1 { width: 500px; height: 500px; background: #fde68a66; top: -120px; left: -100px; animation: drift1 18s ease-in-out infinite alternate; }
+    .orb-2 { width: 400px; height: 400px; background: #bae6fd66; bottom: 100px; right: -80px; animation: drift2 22s ease-in-out infinite alternate; }
+    .orb-3 { width: 300px; height: 300px; background: #ddd6fe44; top: 50%; left: 50%; transform: translate(-50%,-50%); animation: drift3 15s ease-in-out infinite alternate; }
+
+    @keyframes drift1 { from { transform: translate(0,0); } to { transform: translate(60px, 40px); } }
+    @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-40px, -60px); } }
+    @keyframes drift3 { from { transform: translate(-50%,-50%) scale(1); } to { transform: translate(-50%,-50%) scale(1.3); } }
+
+    /* ── WRAPPER ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      padding: 20px 0 0;
+      text-align: center;
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--amber-dim);
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 40px;
+      padding: 4px 12px 4px 8px;
+      margin-bottom: 8px;
+      animation: fadeDown 0.6s ease both;
+    }
+    .logo-badge .dot {
+      width: 8px; height: 8px;
+      background: var(--amber);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--amber-glow);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+    .logo-badge span {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+
+    h1 {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      animation: fadeDown 0.7s 0.1s ease both;
+    }
+
+    h1 .line-accent {
+      display: block;
+      background: linear-gradient(90deg, var(--amber), #fbbf24, #f97316);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 0.88rem;
+      color: var(--dim);
+      max-width: 440px;
+      margin: 0 auto 16px;
+      line-height: 1.55;
+      font-weight: 300;
+      animation: fadeDown 0.7s 0.2s ease both;
+    }
+
+    /* ── CATEGORY LABEL ── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      animation: fadeUp 0.5s ease both;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 18px;
+      background: var(--amber);
+      border-radius: 2px;
+    }
+    .section-label span {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── GRID ── */
+    .unified-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 52px;
+    }
+
+    .card-last {
+      grid-column: 2 / 3;
+    }
+
+    /* ── APP CARD ── */
+    .app-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 26px 24px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+                  border-color 0.3s ease,
+                  box-shadow 0.3s ease;
+      animation: fadeUp 0.5s ease both;
+      cursor: pointer;
+    }
+
+    .app-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent-color, var(--amber-dim)) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: inherit;
+    }
+
+    .app-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: var(--accent-color, rgba(217,119,6,0.4));
+      box-shadow: 0 20px 60px rgba(0,0,0,0.10), 0 0 0 1px var(--accent-color, rgba(217,119,6,0.1));
+    }
+
+    .app-card:hover::before { opacity: 1; }
+
+    /* Card top bar */
+    .app-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-color, var(--amber)), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .app-card:hover::after { opacity: 1; }
+
+    .card-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      background: var(--icon-bg, var(--amber-dim));
+      border: 1px solid var(--icon-border, rgba(245,158,11,0.2));
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .card-meta { position: relative; z-index: 1; }
+
+    .card-tag {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--tag-color, var(--amber));
+      margin-bottom: 4px;
+    }
+
+    .card-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.25;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--dim);
+      line-height: 1.55;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+      margin-top: auto;
+    }
+
+    .card-chip {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--chip-color, var(--amber));
+      background: var(--chip-bg, var(--amber-dim));
+      border: 1px solid var(--chip-border, rgba(245,158,11,0.2));
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+
+    .card-arrow {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      font-size: 13px;
+      transition: all 0.25s ease;
+    }
+    .app-card:hover .card-arrow {
+      border-color: var(--accent-color, var(--amber));
+      color: var(--accent-color, var(--amber));
+      background: var(--accent-color, var(--amber-dim));
+      color: #fff;
+    }
+
+    /* Animation delays for stagger */
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.10s; }
+    .d3 { animation-delay: 0.15s; }
+    .d4 { animation-delay: 0.20s; }
+    .d5 { animation-delay: 0.25s; }
+    .d6 { animation-delay: 0.30s; }
+    .d7 { animation-delay: 0.35s; }
+
+    /* ── ACCENT VARIANTS ── */
+    .accent-amber {
+      --accent-color: rgba(217,119,6,0.30);
+      --icon-bg: rgba(217,119,6,0.10);
+      --icon-border: rgba(217,119,6,0.20);
+      --tag-color: #b45309;
+      --chip-color: #b45309;
+      --chip-bg: rgba(217,119,6,0.10);
+      --chip-border: rgba(217,119,6,0.20);
+    }
+    .accent-blue {
+      --accent-color: rgba(2,132,199,0.25);
+      --icon-bg: rgba(2,132,199,0.10);
+      --icon-border: rgba(2,132,199,0.20);
+      --tag-color: #0369a1;
+      --chip-color: #0369a1;
+      --chip-bg: rgba(2,132,199,0.10);
+      --chip-border: rgba(2,132,199,0.20);
+    }
+    .accent-green {
+      --accent-color: rgba(5,150,105,0.25);
+      --icon-bg: rgba(5,150,105,0.10);
+      --icon-border: rgba(5,150,105,0.20);
+      --tag-color: #047857;
+      --chip-color: #047857;
+      --chip-bg: rgba(5,150,105,0.10);
+      --chip-border: rgba(5,150,105,0.20);
+    }
+    .accent-purple {
+      --accent-color: rgba(124,58,237,0.22);
+      --icon-bg: rgba(124,58,237,0.10);
+      --icon-border: rgba(124,58,237,0.20);
+      --tag-color: #6d28d9;
+      --chip-color: #6d28d9;
+      --chip-bg: rgba(124,58,237,0.10);
+      --chip-border: rgba(124,58,237,0.20);
+    }
+    .accent-rose {
+      --accent-color: rgba(225,29,72,0.20);
+      --icon-bg: rgba(225,29,72,0.10);
+      --icon-border: rgba(225,29,72,0.18);
+      --tag-color: #be123c;
+      --chip-color: #be123c;
+      --chip-bg: rgba(225,29,72,0.08);
+      --chip-border: rgba(225,29,72,0.18);
+    }
+
+    /* ── STAT BAR ── */
+    .stat-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 56px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .stat-item {
+      background: var(--surface);
+      padding: 20px 24px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 0.73rem;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 48px 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 0 40px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+
+    .footer-contact {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .footer-contact a {
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-contact a:hover { color: var(--amber); }
+
+    .footer-copy {
+      margin-top: 18px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── LOGO ── */
+    .logo-svg-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+      animation: fadeDown 0.5s ease both;
+    }
+    .logo-svg-wrap svg {
+      filter: drop-shadow(0 4px 16px rgba(217,119,6,0.25));
+    }
+    .footer-logo-svg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .footer-logo-name {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--amber);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .unified-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .unified-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 2rem; }
+      .wrapper { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="wrapper">
+
+    <!-- ── HEADER ── -->
+    <header>
+
+      <!-- Logo with embedded text -->
+      <div class="logo-svg-wrap" style="margin-bottom:10px;">
+        <svg width="200" height="120" viewBox="0 0 500 390" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Gray arc swoosh above -->
+          <path d="M 28,232 A 218,162 0 0,1 462,208" fill="none" stroke="#94a3b8" stroke-width="11" stroke-linecap="round" opacity="0.75"/>
+          <path d="M 28,232 A 218,162 0 0,1 462,208" fill="none" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+          <!-- ROOF -->
+          <polygon points="65,140 325,140 385,112 125,112" fill="#60a5fa"/>
+          <!-- FRONT FACE -->
+          <polygon points="65,140 325,140 325,252 65,252" fill="#2563eb"/>
+          <!-- SIDE FACE -->
+          <polygon points="325,140 385,112 385,224 325,252" fill="#1d4ed8"/>
+          <!-- Top strip window band -->
+          <rect x="65" y="140" width="260" height="22" fill="#93c5fd" opacity="0.45"/>
+          <polygon points="325,140 385,112 385,128 325,162" fill="#93c5fd" opacity="0.25"/>
+          <!-- GARAGE DOOR 1 -->
+          <rect x="72" y="168" width="76" height="84" rx="2" fill="#b0bec5"/>
+          <line x1="72" y1="182" x2="148" y2="182" stroke="#78909c" stroke-width="1.2"/>
+          <line x1="72" y1="196" x2="148" y2="196" stroke="#78909c" stroke-width="1.2"/>
+          <line x1="72" y1="210" x2="148" y2="210" stroke="#78909c" stroke-width="1.2"/>
+          <line x1="72" y1="224" x2="148" y2="224" stroke="#78909c" stroke-width="1.2"/>
+          <line x1="72" y1="238" x2="148" y2="238" stroke="#78909c" stroke-width="1.2"/>
+          <line x1="110" y1="168" x2="110" y2="252" stroke="#78909c" stroke-width="0.8" opacity="0.5"/>
+          <!-- GARAGE DOOR 2 -->
+          <rect x="158" y="168" width="76" height="84" rx="2" fill="#b0bec5"/>
+          <line x1="158" y1="182" x2="234" y2="182" stroke="#78909c" stroke-width="1.2"/>
+          <line x1="158" y1="196" x2="234" y2="196" stroke="#78909c" stroke-width="1.2"/>
+          <line x1="158" y1="210" x2="234" y2="210" stroke="#78909c" stroke-width="1.2"/>
+          <line x1="158" y1="224" x2="234" y2="224" stroke="#78909c" stroke-width="1.2"/>
+          <line x1="158" y1="238" x2="234" y2="238" stroke="#78909c" stroke-width="1.2"/>
+          <line x1="196" y1="168" x2="196" y2="252" stroke="#78909c" stroke-width="0.8" opacity="0.5"/>
+          <!-- GARAGE DOOR 3 -->
+          <rect x="244" y="168" width="76" height="84" rx="2" fill="#90a4b4"/>
+          <line x1="244" y1="182" x2="320" y2="182" stroke="#607080" stroke-width="1.2"/>
+          <line x1="244" y1="196" x2="320" y2="196" stroke="#607080" stroke-width="1.2"/>
+          <line x1="244" y1="210" x2="320" y2="210" stroke="#607080" stroke-width="1.2"/>
+          <line x1="244" y1="224" x2="320" y2="224" stroke="#607080" stroke-width="1.2"/>
+          <line x1="244" y1="238" x2="320" y2="238" stroke="#607080" stroke-width="1.2"/>
+          <line x1="282" y1="168" x2="282" y2="252" stroke="#607080" stroke-width="0.8" opacity="0.5"/>
+          <!-- SIDE partial door -->
+          <polygon points="325,168 365,150 365,218 325,236" fill="#8fa8c0" opacity="0.6"/>
+          <line x1="325" y1="181" x2="365" y2="163" stroke="#607080" stroke-width="1" opacity="0.7"/>
+          <line x1="325" y1="197" x2="365" y2="179" stroke="#607080" stroke-width="1" opacity="0.7"/>
+          <line x1="325" y1="213" x2="365" y2="195" stroke="#607080" stroke-width="1" opacity="0.7"/>
+          <!-- Bottom edge -->
+          <line x1="65" y1="252" x2="325" y2="252" stroke="#1e40af" stroke-width="2" opacity="0.5"/>
+          <!-- Blue wave swoosh -->
+          <path d="M 28,262 C 150,282 318,244 472,264" fill="none" stroke="#2563eb" stroke-width="7" stroke-linecap="round"/>
+          <path d="M 28,262 C 150,282 318,244 472,264" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
+          <!-- DEMO LOGISTICS text inside logo -->
+          <text x="250" y="308"
+            text-anchor="middle"
+            font-family="'Exo 2', Georgia, sans-serif"
+            font-weight="900"
+            font-size="36"
+            fill="#1e293b"
+            letter-spacing="3">DEMO LOGISTICS</text>
+        </svg>
+      </div>
+
+      <!-- Title: all on one line -->
+      <h1>All Tools. <span class="line-accent" style="display:inline;">One Place.</span></h1>
+
+      <p class="subtitle">
+        A unified gateway to your logistics intelligence suite — from 3D warehouse
+        visualization to financial analytics and quotation management.
+      </p>
+    </header>
+
+    <!-- ── ALL APPS UNIFIED GRID ── -->
+    <div class="unified-grid">
+
+      <a href="https://komsan-kongsuwan.github.io/3D-Warehouse/" target="_blank" class="app-card accent-amber d1">
+        <div class="card-header">
+          <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Floor -->
+                <polygon points="2,22 13,26 24,22 13,18" fill="#cbd5e1"/>
+
+                <!-- LEFT RACK — front face (isometric) -->
+                <!-- Blue upright left -->
+                <polygon points="2,6 4,5 4,22 2,23" fill="#2563eb"/>
+                <!-- Blue upright right -->
+                <polygon points="8,4 10,3 10,20 8,21" fill="#1d4ed8"/>
+                <!-- Orange boxes stacked (4 rows) -->
+                <polygon points="2,19 8,17 8,14 2,16" fill="#ea580c"/>
+                <polygon points="8,17 10,16 10,13 8,14" fill="#c2410c"/>
+                <polygon points="2,15 8,13 8,10 2,12" fill="#f97316"/>
+                <polygon points="8,13 10,12 10,9  8,10" fill="#c2410c"/>
+                <polygon points="2,11 8,9  8,6  2,8"  fill="#ea580c"/>
+                <polygon points="8,9  10,8  10,5  8,6"  fill="#c2410c"/>
+                <polygon points="2,7  8,5  8,3  2,5"  fill="#f97316"/>
+                <polygon points="8,5  10,4  10,2  8,3"  fill="#c2410c"/>
+                <!-- Shelf beams -->
+                <line x1="2" y1="16" x2="10" y2="13" stroke="#1d4ed8" stroke-width="0.6"/>
+                <line x1="2" y1="12" x2="10" y2="9"  stroke="#1d4ed8" stroke-width="0.6"/>
+                <line x1="2" y1="8"  x2="10" y2="5"  stroke="#1d4ed8" stroke-width="0.6"/>
+
+                <!-- RIGHT RACK — isometric -->
+                <polygon points="16,4 18,3 18,20 16,21" fill="#2563eb"/>
+                <polygon points="22,6 24,7 24,23 22,22" fill="#1d4ed8"/>
+                <!-- Orange boxes -->
+                <polygon points="16,17 22,19 22,16 16,14" fill="#ea580c"/>
+                <polygon points="22,19 24,20 24,17 22,16" fill="#c2410c"/>
+                <polygon points="16,13 22,15 22,12 16,10" fill="#f97316"/>
+                <polygon points="22,15 24,16 24,13 22,12" fill="#c2410c"/>
+                <polygon points="16,9  22,11 22,8  16,6"  fill="#ea580c"/>
+                <polygon points="22,11 24,12 24,9  22,8"  fill="#c2410c"/>
+                <polygon points="16,5  22,7  22,4  16,2"  fill="#f97316"/>
+                <polygon points="22,7  24,8  24,5  22,4"  fill="#c2410c"/>
+                <!-- Shelf beams -->
+                <line x1="16" y1="14" x2="24" y2="17" stroke="#1d4ed8" stroke-width="0.6"/>
+                <line x1="16" y1="10" x2="24" y2="13" stroke="#1d4ed8" stroke-width="0.6"/>
+                <line x1="16" y1="6"  x2="24" y2="9"  stroke="#1d4ed8" stroke-width="0.6"/>
+
+                <!-- Forklift (in aisle) -->
+                <polygon points="12,22 15,21 15,19 12,20" fill="#f97316"/>
+                <polygon points="15,21 16,21 16,19 15,19" fill="#c2410c"/>
+                <line x1="12" y1="20" x2="12" y2="17" stroke="#ea580c" stroke-width="0.8"/>
+                <line x1="11" y1="19" x2="9"  y2="20" stroke="#c2410c" stroke-width="0.7"/>
+                <line x1="11" y1="20" x2="9"  y2="21" stroke="#c2410c" stroke-width="0.7"/>
+                <circle cx="13" cy="22.5" r="0.8" fill="#1e293b"/>
+                <circle cx="15.2" cy="22" r="0.8" fill="#1e293b"/>
+              </svg>
+            </div>
+          <div class="card-meta">
+            <div class="card-tag">3D Visualization</div>
+            <div class="card-title">3D Warehouse Viewer</div>
+          </div>
+        </div>
+        <p class="card-desc">
+          Interactive 3D warehouse layout with real-time inventory mapping. Visualize rack locations, customer zones, occupancy rates, and stock aging by slot.
+        </p>
+        <div class="card-footer">
+          <span class="card-chip">WebGL · Excel Import</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="https://komsan-kongsuwan.github.io/3D-Container-Plan/" target="_blank" class="app-card accent-blue d2">
+        <div class="card-header">
+          <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer container frame -->
+                <rect x="1" y="4" width="24" height="18" rx="1" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2"/>
+                <!-- Top & bottom edge bars -->
+                <rect x="1" y="4"  width="24" height="1.8" rx="0.5" fill="#0284c7"/>
+                <rect x="1" y="20.2" width="24" height="1.8" rx="0.5" fill="#0284c7"/>
+                <!-- Vertical ribs (left body) -->
+                <line x1="3.5" y1="5.8" x2="3.5" y2="20.2" stroke="#0284c7" stroke-width="0.9"/>
+                <line x1="5.5" y1="5.8" x2="5.5" y2="20.2" stroke="#0284c7" stroke-width="0.9"/>
+                <line x1="7.5" y1="5.8" x2="7.5" y2="20.2" stroke="#0284c7" stroke-width="0.9"/>
+                <line x1="9.5" y1="5.8" x2="9.5" y2="20.2" stroke="#0284c7" stroke-width="0.9"/>
+                <line x1="11.5" y1="5.8" x2="11.5" y2="20.2" stroke="#0284c7" stroke-width="0.9"/>
+                <line x1="13.5" y1="5.8" x2="13.5" y2="20.2" stroke="#0284c7" stroke-width="0.9"/>
+                <line x1="15.5" y1="5.8" x2="15.5" y2="20.2" stroke="#0284c7" stroke-width="0.9"/>
+                <!-- Door panel divider (right section) -->
+                <rect x="17.5" y="4" width="7.5" height="18" rx="0" fill="#bae6fd" stroke="#0284c7" stroke-width="0.8"/>
+                <!-- Door center split -->
+                <line x1="21.3" y1="5.8" x2="21.3" y2="20.2" stroke="#0284c7" stroke-width="0.8"/>
+                <!-- Door hinges left -->
+                <rect x="17.8" y="7"  width="1.2" height="2" rx="0.3" fill="#0284c7"/>
+                <rect x="17.8" y="17" width="1.2" height="2" rx="0.3" fill="#0284c7"/>
+                <!-- Door hinges right -->
+                <rect x="24"   y="7"  width="1"   height="2" rx="0.3" fill="#0284c7"/>
+                <rect x="24"   y="17" width="1"   height="2" rx="0.3" fill="#0284c7"/>
+                <!-- Door handle left -->
+                <rect x="19.5" y="12" width="1" height="2.5" rx="0.3" fill="#0369a1"/>
+                <!-- Door handle right -->
+                <rect x="22.5" y="12" width="1" height="2.5" rx="0.3" fill="#0369a1"/>
+                <!-- Corner castings -->
+                <rect x="1"  y="4"    width="2.5" height="2.5" rx="0.4" fill="#0369a1"/>
+                <rect x="1"  y="19.5" width="2.5" height="2.5" rx="0.4" fill="#0369a1"/>
+                <rect x="22.5" y="4"    width="2.5" height="2.5" rx="0.4" fill="#0369a1"/>
+                <rect x="22.5" y="19.5" width="2.5" height="2.5" rx="0.4" fill="#0369a1"/>
+              </svg>
+            </div>
+          <div class="card-meta">
+            <div class="card-tag">Load Planning</div>
+            <div class="card-title">3D Container Planner</div>
+          </div>
+        </div>
+        <p class="card-desc">
+          Plan and optimize cargo inside shipping containers in 3D. Auto-pack or manually place items, check volume & weight utilization, and export loading plans.
+        </p>
+        <div class="card-footer">
+          <span class="card-chip">Auto-Pack · PDF Export</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="https://komsan-kongsuwan.github.io/3D-Palletizing-Plan/" target="_blank" class="app-card accent-green d3">
+        <div class="card-header">
+          <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Pallet base -->
+                <rect x="1" y="21.5" width="24" height="2" rx="0.5" fill="#b45309"/>
+                <rect x="2"  y="19.5" width="4.5" height="2" rx="0.3" fill="#92400e"/>
+                <rect x="10.5" y="19.5" width="4.5" height="2" rx="0.3" fill="#92400e"/>
+                <rect x="19" y="19.5" width="4.5" height="2" rx="0.3" fill="#92400e"/>
+                <rect x="1" y="17.5" width="24" height="2" rx="0.5" fill="#b45309"/>
+
+                <!-- Bottom row: 3 boxes -->
+                <!-- Box bottom-left front -->
+                <rect x="1" y="11" width="8" height="6.5" rx="0.5" fill="#d97706"/>
+                <polygon points="1,11 3,9 11,9 9,11" fill="#fbbf24"/>
+                <polygon points="9,11 11,9 11,15 9,17.5" fill="#b45309"/>
+                <!-- label -->
+                <rect x="2.5" y="13" width="4" height="2" rx="0.3" fill="#fef3c7" opacity="0.8"/>
+
+                <!-- Box bottom-middle front -->
+                <rect x="9.5" y="11" width="8" height="6.5" rx="0.5" fill="#d97706"/>
+                <polygon points="9.5,11 11.5,9 19.5,9 17.5,11" fill="#fbbf24"/>
+                <polygon points="17.5,11 19.5,9 19.5,15 17.5,17.5" fill="#b45309"/>
+                <rect x="11" y="13" width="4" height="2" rx="0.3" fill="#fef3c7" opacity="0.8"/>
+
+                <!-- Top row: 2 boxes -->
+                <!-- Box top-left -->
+                <rect x="1" y="5" width="8" height="6" rx="0.5" fill="#d97706"/>
+                <polygon points="1,5 3,3 11,3 9,5" fill="#fbbf24"/>
+                <polygon points="9,5 11,3 11,9 9,11" fill="#b45309"/>
+                <rect x="2.5" y="7" width="4" height="2" rx="0.3" fill="#fef3c7" opacity="0.8"/>
+
+                <!-- Box top-right -->
+                <rect x="9.5" y="5" width="8" height="6" rx="0.5" fill="#d97706"/>
+                <polygon points="9.5,5 11.5,3 19.5,3 17.5,5" fill="#fbbf24"/>
+                <polygon points="17.5,5 19.5,3 19.5,9 17.5,11" fill="#b45309"/>
+                <rect x="11" y="7" width="4" height="2" rx="0.3" fill="#fef3c7" opacity="0.8"/>
+
+                <!-- Single box right (taller stack) -->
+                <rect x="18" y="8" width="7" height="9.5" rx="0.5" fill="#c07813"/>
+                <polygon points="18,8 20,6 25,6 25,8" fill="#e8a020"/>
+                <rect x="19" y="11" width="4" height="2.5" rx="0.3" fill="#fef3c7" opacity="0.7"/>
+              </svg>
+            </div>
+          <div class="card-meta">
+            <div class="card-tag">Palletizing</div>
+            <div class="card-title">3D Pallet Planner</div>
+          </div>
+        </div>
+        <p class="card-desc">
+          Build efficient pallet stacks in 3D. Define custom pallet sizes, add cargo, auto-pack or drag items manually, and track height & weight constraints in real time.
+        </p>
+        <div class="card-footer">
+          <span class="card-chip">Multi-Pallet · Manual Mode</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="https://komsan-kongsuwan.github.io/profit_and_loss/" target="_blank" class="app-card accent-rose d4">
+        <div class="card-header">
+          <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <line x1="3" y1="2" x2="3"  y2="22" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="3" y1="22" x2="25" y2="22" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round"/>
+                <!-- Axis arrows -->
+                <polyline points="2,4 3,2 4,4" fill="none" stroke="#1e293b" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="23,21 25,22 23,23" fill="none" stroke="#1e293b" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Bars (varied heights and colors like reference) -->
+                <rect x="4"  y="18" width="2" height="4"  rx="0.3" fill="#1e293b"/>
+                <rect x="7"  y="15" width="2" height="7"  rx="0.3" fill="#06b6d4"/>
+                <rect x="10" y="14" width="2" height="8"  rx="0.3" fill="#2563eb"/>
+                <rect x="13" y="19" width="2" height="3"  rx="0.3" fill="#be123c"/>
+                <rect x="16" y="12" width="2" height="10" rx="0.3" fill="#f97316"/>
+                <rect x="19" y="10" width="2" height="12" rx="0.3" fill="#2563eb"/>
+                <rect x="22" y="8"  width="2" height="14" rx="0.3" fill="#eab308"/>
+                <!-- Trend line -->
+                <polyline points="5,19 8,16 11,17 14,20 17,13 20,11 23,9"
+                  fill="none" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Line dots -->
+                <circle cx="5"  cy="19" r="1.1" fill="white" stroke="#1e293b" stroke-width="1"/>
+                <circle cx="11" cy="17" r="1.1" fill="white" stroke="#1e293b" stroke-width="1"/>
+                <circle cx="17" cy="13" r="1.1" fill="white" stroke="#1e293b" stroke-width="1"/>
+                <circle cx="23" cy="9"  r="1.1" fill="white" stroke="#1e293b" stroke-width="1"/>
+              </svg>
+            </div>
+          <div class="card-meta">
+            <div class="card-tag">Financial Analytics</div>
+            <div class="card-title">Profit &amp; Loss Dashboard</div>
+          </div>
+        </div>
+        <p class="card-desc">
+          Multi-site P&amp;L analysis with revenue, variable cost, marginal profit, fixed cost, gross profit, and operating profit breakdowns. Filter by site, item, and month.
+        </p>
+        <div class="card-footer">
+          <span class="card-chip">Excel Upload · Monthly Trend</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="https://komsan-kongsuwan.github.io/demo-inventory-dashboard/" target="_blank" class="app-card accent-purple d5">
+        <div class="card-header">
+          <div class="card-icon">📋</div>
+          <div class="card-meta">
+            <div class="card-tag">Inventory Intelligence</div>
+            <div class="card-title">Inventory Dashboard</div>
+          </div>
+        </div>
+        <p class="card-desc">
+          Upload inventory Excel data and instantly view item-level stock analytics. Track movement history, download stock reports, and monitor item performance over time.
+        </p>
+        <div class="card-footer">
+          <span class="card-chip">Stock History · Excel Export</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="https://komsan-kongsuwan.github.io/simulation-selective-rack/" target="_blank" class="app-card accent-blue d6">
+        <div class="card-header">
+          <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Blue vertical uprights -->
+                <rect x="1"  y="1" width="2" height="24" rx="0.5" fill="#2563eb"/>
+                <rect x="11" y="1" width="2" height="24" rx="0.5" fill="#2563eb"/>
+                <rect x="23" y="1" width="2" height="24" rx="0.5" fill="#2563eb"/>
+
+                <!-- Orange horizontal beams — top level -->
+                <rect x="1" y="5"  width="24" height="1.5" rx="0.4" fill="#ea580c"/>
+                <!-- Orange horizontal beams — mid level -->
+                <rect x="1" y="13" width="24" height="1.5" rx="0.4" fill="#ea580c"/>
+                <!-- Orange horizontal beams — bottom level -->
+                <rect x="1" y="21" width="24" height="1.5" rx="0.4" fill="#ea580c"/>
+
+                <!-- Top shelf boxes -->
+                <rect x="3"  y="2.5" width="7" height="2.5" rx="0.4" fill="#d97706"/><!-- pallet -->
+                <rect x="3.5" y="1"  width="6" height="1.8" rx="0.3" fill="#fbbf24"/><!-- box top -->
+                <rect x="15" y="2.5" width="7" height="2.5" rx="0.4" fill="#d97706"/>
+                <rect x="15.5" y="1" width="6" height="1.8" rx="0.3" fill="#fbbf24"/>
+
+                <!-- Mid shelf boxes -->
+                <rect x="3"  y="10.5" width="7" height="2.5" rx="0.4" fill="#d97706"/>
+                <rect x="3.5" y="8.8" width="6" height="1.8" rx="0.3" fill="#fbbf24"/>
+                <rect x="15" y="10.5" width="7" height="2.5" rx="0.4" fill="#d97706"/>
+                <rect x="15.5" y="8.8" width="6" height="1.8" rx="0.3" fill="#fbbf24"/>
+
+                <!-- Bottom shelf boxes -->
+                <rect x="3"  y="18.5" width="7" height="2.5" rx="0.4" fill="#d97706"/>
+                <rect x="3.5" y="16.8" width="6" height="1.8" rx="0.3" fill="#fbbf24"/>
+                <rect x="15" y="18.5" width="7" height="2.5" rx="0.4" fill="#d97706"/>
+                <rect x="15.5" y="16.8" width="6" height="1.8" rx="0.3" fill="#fbbf24"/>
+
+                <!-- Yellow column guards (base) -->
+                <rect x="0.5" y="22.5" width="2" height="3" rx="0.5" fill="#eab308"/>
+                <rect x="23.5" y="22.5" width="2" height="3" rx="0.5" fill="#eab308"/>
+              </svg>
+            </div>
+          <div class="card-meta">
+            <div class="card-tag">Simulation</div>
+            <div class="card-title">Selective Rack Simulation</div>
+          </div>
+        </div>
+        <p class="card-desc">
+          Visualize selective rack occupancy with color-coded stock aging filters. Load rack location and inventory data to see customer allocation, utilization, and aging breakdowns.
+        </p>
+        <div class="card-footer">
+          <span class="card-chip">Stock Aging · Customer Filter</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- Last row: single centered card -->
+      <a href="https://komsan.pythonanywhere.com/" target="_blank" class="app-card accent-amber d7 card-last">
+        <div class="card-header">
+          <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Roof (pitched triangle) -->
+                <polygon points="1,11 13,2 25,11" fill="#dde3ea"/>
+                <polygon points="1,11 13,2 25,11 25,12 1,12" fill="#c8d0da"/>
+                <!-- Skylight window on roof -->
+                <rect x="7" y="7" width="12" height="3" rx="1" fill="#bfdbfe" stroke="#1e293b" stroke-width="0.8"/>
+                <!-- Building walls -->
+                <rect x="2" y="12" width="22" height="13" rx="0.5" fill="#94a3b8" stroke="#1e293b" stroke-width="0.8"/>
+                <!-- Garage opening (dark interior) -->
+                <rect x="3" y="13" width="20" height="11" rx="0.3" fill="#64748b"/>
+                <!-- Stacked boxes inside — step pattern like reference -->
+                <!-- Bottom row: 3 boxes -->
+                <rect x="5"  y="19" width="5" height="5" rx="0.3" fill="#d4a574" stroke="#1e293b" stroke-width="0.6"/>
+                <rect x="10.5" y="19" width="5" height="5" rx="0.3" fill="#d4a574" stroke="#1e293b" stroke-width="0.6"/>
+                <rect x="16" y="19" width="5" height="5" rx="0.3" fill="#d4a574" stroke="#1e293b" stroke-width="0.6"/>
+                <!-- Middle row: 2 boxes (right-aligned staircase) -->
+                <rect x="10.5" y="14" width="5" height="5" rx="0.3" fill="#c8955a" stroke="#1e293b" stroke-width="0.6"/>
+                <rect x="16"   y="14" width="5" height="5" rx="0.3" fill="#c8955a" stroke="#1e293b" stroke-width="0.6"/>
+                <!-- Top: 1 box -->
+                <rect x="16" y="13" width="5" height="1" rx="0.2" fill="#b87840" stroke="#1e293b" stroke-width="0.5"/>
+              </svg>
+            </div>
+          <div class="card-meta">
+            <div class="card-tag">Quotation System</div>
+            <div class="card-title">Quotation &amp; RFQ</div>
+          </div>
+        </div>
+        <p class="card-desc">
+          Centralized quotation management portal covering Warehouse (WH), Sales (SALE), and Transport (TRN) modules. Shared user accounts with role-based access control.
+        </p>
+        <div class="card-footer">
+          <span class="card-chip">WH · SALE · TRN</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+      <div class="footer-logo-svg">
+        <svg width="60" height="41" viewBox="0 0 500 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 28,232 A 218,162 0 0,1 462,208" fill="none" stroke="#94a3b8" stroke-width="11" stroke-linecap="round" opacity="0.75"/>
+          <polygon points="65,140 325,140 385,112 125,112" fill="#60a5fa"/>
+          <polygon points="65,140 325,140 325,252 65,252" fill="#2563eb"/>
+          <polygon points="325,140 385,112 385,224 325,252" fill="#1d4ed8"/>
+          <rect x="65" y="140" width="260" height="22" fill="#93c5fd" opacity="0.45"/>
+          <rect x="72" y="168" width="76" height="84" rx="2" fill="#b0bec5"/>
+          <rect x="158" y="168" width="76" height="84" rx="2" fill="#b0bec5"/>
+          <rect x="244" y="168" width="76" height="84" rx="2" fill="#90a4b4"/>
+          <path d="M 28,262 C 150,282 318,244 472,264" fill="none" stroke="#2563eb" stroke-width="7" stroke-linecap="round"/>
+        </svg>
+        <span class="footer-logo-name">Demo Logistics</span>
+      </div>
+      <div class="footer-contact">
+        Developed by <strong style="color:var(--text)">Komsan Kongsuwan</strong><br />
+        <a href="/cdn-cgi/l/email-protection#701b1f1d03111e5e1b1f1e17030507111e30171d11191c5e131f1d"><span class="__cf_email__" data-cfemail="492226243a2827672226272e3a3c3e2827092e24282025672a2624">[email&#160;protected]</span></a>
+        &nbsp;·&nbsp;
+        <a href="tel:+66817239680">+66-81-723-9680</a>
