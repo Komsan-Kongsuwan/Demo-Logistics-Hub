@@ -195,6 +195,17 @@
       grid-column: 2 / 3;
     }
 
+    .last-row {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .last-row .app-card {
+      width: calc(33.333% - 10px);
+    }
+
     /* ── APP CARD ── */
     .app-card {
       position: relative;
@@ -881,45 +892,82 @@
         </div>
       </a>
 
-      <!-- Last row: single centered card -->
-      <a href="https://komsan.pythonanywhere.com/" target="app_quotation" class="app-card accent-amber d7 card-last">
-        <div class="card-header">
-          <div class="card-icon">
+      <!-- Last row: 2 centered cards -->
+      <div class="last-row">
+
+        <a href="https://komsan.pythonanywhere.com/" target="app_quotation" class="app-card accent-amber d7">
+          <div class="card-header">
+            <div class="card-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polygon points="1,11 13,2 25,11" fill="#dde3ea"/>
+                  <polygon points="1,11 13,2 25,11 25,12 1,12" fill="#c8d0da"/>
+                  <rect x="7" y="7" width="12" height="3" rx="1" fill="#bfdbfe" stroke="#1e293b" stroke-width="0.8"/>
+                  <rect x="2" y="12" width="22" height="13" rx="0.5" fill="#94a3b8" stroke="#1e293b" stroke-width="0.8"/>
+                  <rect x="3" y="13" width="20" height="11" rx="0.3" fill="#64748b"/>
+                  <rect x="5"  y="19" width="5" height="5" rx="0.3" fill="#d4a574" stroke="#1e293b" stroke-width="0.6"/>
+                  <rect x="10.5" y="19" width="5" height="5" rx="0.3" fill="#d4a574" stroke="#1e293b" stroke-width="0.6"/>
+                  <rect x="16" y="19" width="5" height="5" rx="0.3" fill="#d4a574" stroke="#1e293b" stroke-width="0.6"/>
+                  <rect x="10.5" y="14" width="5" height="5" rx="0.3" fill="#c8955a" stroke="#1e293b" stroke-width="0.6"/>
+                  <rect x="16"   y="14" width="5" height="5" rx="0.3" fill="#c8955a" stroke="#1e293b" stroke-width="0.6"/>
+                  <rect x="16" y="13" width="5" height="1" rx="0.2" fill="#b87840" stroke="#1e293b" stroke-width="0.5"/>
+                </svg>
+              </div>
+            <div class="card-meta">
+              <div class="card-tag">Quotation System</div>
+              <div class="card-title">Quotation &amp; RFQ</div>
+            </div>
+          </div>
+          <p class="card-desc">
+            Centralized quotation management portal covering Warehouse (WH), Sales (SALE), and Transport (TRN) modules. Shared user accounts with role-based access control.
+          </p>
+          <div class="card-footer">
+            <span class="card-chip">WH · SALE · TRN</span>
+            <div class="card-arrow">→</div>
+          </div>
+        </a>
+
+        <a href="https://komsan-kongsuwan.github.io/DEMOFlow/" target="app_demoflow" class="app-card accent-purple d7">
+          <div class="card-header">
+            <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Roof (pitched triangle) -->
-                <polygon points="1,11 13,2 25,11" fill="#dde3ea"/>
-                <polygon points="1,11 13,2 25,11 25,12 1,12" fill="#c8d0da"/>
-                <!-- Skylight window on roof -->
-                <rect x="7" y="7" width="12" height="3" rx="1" fill="#bfdbfe" stroke="#1e293b" stroke-width="0.8"/>
-                <!-- Building walls -->
-                <rect x="2" y="12" width="22" height="13" rx="0.5" fill="#94a3b8" stroke="#1e293b" stroke-width="0.8"/>
-                <!-- Garage opening (dark interior) -->
-                <rect x="3" y="13" width="20" height="11" rx="0.3" fill="#64748b"/>
-                <!-- Stacked boxes inside — step pattern like reference -->
-                <!-- Bottom row: 3 boxes -->
-                <rect x="5"  y="19" width="5" height="5" rx="0.3" fill="#d4a574" stroke="#1e293b" stroke-width="0.6"/>
-                <rect x="10.5" y="19" width="5" height="5" rx="0.3" fill="#d4a574" stroke="#1e293b" stroke-width="0.6"/>
-                <rect x="16" y="19" width="5" height="5" rx="0.3" fill="#d4a574" stroke="#1e293b" stroke-width="0.6"/>
-                <!-- Middle row: 2 boxes (right-aligned staircase) -->
-                <rect x="10.5" y="14" width="5" height="5" rx="0.3" fill="#c8955a" stroke="#1e293b" stroke-width="0.6"/>
-                <rect x="16"   y="14" width="5" height="5" rx="0.3" fill="#c8955a" stroke="#1e293b" stroke-width="0.6"/>
-                <!-- Top: 1 box -->
-                <rect x="16" y="13" width="5" height="1" rx="0.2" fill="#b87840" stroke="#1e293b" stroke-width="0.5"/>
+                <!-- Start node (rounded) -->
+                <rect x="9" y="1" width="8" height="4" rx="2" fill="#7c3aed"/>
+                <!-- Arrow down -->
+                <line x1="13" y1="5" x2="13" y2="7" stroke="#7c3aed" stroke-width="1.2" stroke-linecap="round"/>
+                <polyline points="11.5,6.2 13,7.5 14.5,6.2" fill="none" stroke="#7c3aed" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Process box 1 (highlighted/active) -->
+                <rect x="6" y="7.5" width="14" height="4.5" rx="1" fill="#7c3aed"/>
+                <rect x="6.5" y="8" width="13" height="3.5" rx="0.8" fill="#ddd6fe"/>
+                <!-- Arrow down -->
+                <line x1="13" y1="12" x2="13" y2="14" stroke="#7c3aed" stroke-width="1.2" stroke-linecap="round"/>
+                <polyline points="11.5,13.2 13,14.5 14.5,13.2" fill="none" stroke="#7c3aed" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Decision diamond -->
+                <polygon points="13,14.5 19,18 13,21.5 7,18" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+                <!-- Diamond yes/no branches -->
+                <line x1="19" y1="18" x2="23" y2="18" stroke="#7c3aed" stroke-width="1" stroke-linecap="round"/>
+                <line x1="7"  y1="18" x2="3"  y2="18" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-dasharray="1.5,1"/>
+                <!-- End node -->
+                <line x1="23" y1="18" x2="23" y2="22" stroke="#7c3aed" stroke-width="1" stroke-linecap="round"/>
+                <rect x="19" y="22" width="8" height="3" rx="1.5" fill="#7c3aed"/>
+                <!-- Play button indicator -->
+                <polygon points="10.5,9.2 10.5,11 12.2,10.1" fill="#7c3aed"/>
               </svg>
             </div>
-          <div class="card-meta">
-            <div class="card-tag">Quotation System</div>
-            <div class="card-title">Quotation &amp; RFQ</div>
+            <div class="card-meta">
+              <div class="card-tag">Training &amp; SOP</div>
+              <div class="card-title">DEMOFlow</div>
+            </div>
           </div>
-        </div>
-        <p class="card-desc">
-          Centralized quotation management portal covering Warehouse (WH), Sales (SALE), and Transport (TRN) modules. Shared user accounts with role-based access control.
-        </p>
-        <div class="card-footer">
-          <span class="card-chip">WH · SALE · TRN</span>
-          <div class="card-arrow">→</div>
-        </div>
-      </a>
+          <p class="card-desc">
+            Animated flowchart and work instruction viewer for staff training. Step through SOPs manually or with auto-play, load process topics from Excel, and simulate work procedures interactively.
+          </p>
+          <div class="card-footer">
+            <span class="card-chip">Auto-Play · Step-by-Step</span>
+            <div class="card-arrow">→</div>
+          </div>
+        </a>
+
+      </div>
 
     </div>
 
@@ -941,7 +989,4 @@
       </div>
       <div class="footer-contact">
         Developed by <strong style="color:var(--text)">Komsan Kongsuwan</strong><br />
-        <a href="mailto:komsan.kongsuwan@gmail.com">komsan.kongsuwan@gmail.com</a>
-        &nbsp;·&nbsp;
-        <a href="tel:+66817239680">+66-81-723-9680</a>
-      </div>
+        <a href="/cdn-cgi/l/email-protection#9ef5f1f3edfff0b0f5f1f0f9edebe9fff0def9f3fff7f2b0fdf1f3"><span class="__cf_email__" data-cfemail="acc7c3c1dfcdc282c7c3c2cbdfd9dbc
