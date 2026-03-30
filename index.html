@@ -603,7 +603,7 @@
     <!-- ── ALL APPS UNIFIED GRID ── -->
     <div class="unified-grid">
 
-      <a href="https://komsan-kongsuwan.github.io/3D-Warehouse/" target="app_warehouse" class="app-card accent-amber d1">
+      <a href="https://komsan-kongsuwan.github.io/3D-Warehouse/" data-appwin="app_warehouse" class="app-card accent-amber d1" onclick="openApp(event,this)">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -670,7 +670,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/3D-Container-Plan/" target="app_container" class="app-card accent-blue d2">
+      <a href="https://komsan-kongsuwan.github.io/3D-Container-Plan/" data-appwin="app_container" class="app-card accent-blue d2" onclick="openApp(event,this)">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -722,7 +722,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/3D-Palletizing-Plan/" target="app_pallet" class="app-card accent-green d3">
+      <a href="https://komsan-kongsuwan.github.io/3D-Palletizing-Plan/" data-appwin="app_pallet" class="app-card accent-green d3" onclick="openApp(event,this)">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -780,7 +780,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/profit_and_loss/" target="app_pnl" class="app-card accent-rose d4">
+      <a href="https://komsan-kongsuwan.github.io/profit_and_loss/" data-appwin="app_pnl" class="app-card accent-rose d4" onclick="openApp(event,this)">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -822,7 +822,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/demo-inventory-dashboard/" target="app_inventory" class="app-card accent-purple d5">
+      <a href="https://komsan-kongsuwan.github.io/demo-inventory-dashboard/" data-appwin="app_inventory" class="app-card accent-purple d5" onclick="openApp(event,this)">
         <div class="card-header">
           <div class="card-icon">📋</div>
           <div class="card-meta">
@@ -839,7 +839,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/simulation-selective-rack/" target="app_rack" class="app-card accent-blue d6">
+      <a href="https://komsan-kongsuwan.github.io/simulation-selective-rack/" data-appwin="app_rack" class="app-card accent-blue d6" onclick="openApp(event,this)">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -895,7 +895,7 @@
       <!-- Last row: 3 centered cards -->
       <div class="last-row">
 
-        <a href="https://komsan.pythonanywhere.com/" target="app_quotation" class="app-card accent-amber">
+        <a href="https://komsan.pythonanywhere.com/" data-appwin="app_quotation" class="app-card accent-amber" onclick="openApp(event,this)">
           <div class="card-header">
             <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -926,7 +926,7 @@
           </div>
         </a>
 
-        <a href="https://komsan-kongsuwan.github.io/DEMOFlow/" target="app_demoflow" class="app-card accent-purple">
+        <a href="https://komsan-kongsuwan.github.io/DEMOFlow/" data-appwin="app_demoflow" class="app-card accent-purple" onclick="openApp(event,this)">
           <div class="card-header">
             <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -959,7 +959,7 @@
           </div>
         </a>
 
-        <a href="https://komsan-kongsuwan.github.io/Profit-and-Loss-Chat/" target="app_plchat" class="app-card accent-green">
+        <a href="https://komsan-kongsuwan.github.io/Profit-and-Loss-Chat/" data-appwin="app_plchat" class="app-card accent-green" onclick="openApp(event,this)">
           <div class="card-header">
             <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1016,6 +1016,29 @@
     </footer>
 
   </div><!-- /wrapper -->
+
+  <script>
+    const appWindows = {};
+
+    function openApp(e, el) {
+      e.preventDefault();
+      const url = el.getAttribute('href');
+      const name = el.getAttribute('data-appwin');
+      if (appWindows[name] && !appWindows[name].closed) {
+        appWindows[name].focus();
+      } else {
+        appWindows[name] = window.open(url, name);
+      }
+    }
+
+    window.addEventListener('beforeunload', function () {
+      Object.values(appWindows).forEach(function (win) {
+        if (win && !win.closed) {
+          win.close();
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
