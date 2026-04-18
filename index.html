@@ -505,77 +505,6 @@
       h1 { font-size: 2rem; }
       .wrapper { padding: 0 16px; }
     }
-    /* ── APP OVERLAY ── */
-    #app-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: #f1f5f9;
-      flex-direction: column;
-    }
-    #app-overlay.active { display: flex; }
-
-    #overlay-topbar {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 10px 18px;
-      background: #ffffff;
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      flex-shrink: 0;
-      z-index: 1;
-    }
-
-    #overlay-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--amber);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 7px 16px;
-      font-family: 'Exo 2', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.04em;
-      transition: background 0.2s;
-      flex-shrink: 0;
-    }
-    #overlay-back:hover { background: #b45309; }
-
-    #overlay-title {
-      font-family: 'Exo 2', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-      flex: 1;
-    }
-
-    #overlay-logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      opacity: 0.5;
-    }
-    #overlay-logo span {
-      font-family: 'Exo 2', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: 0.06em;
-    }
-
-    #app-frame {
-      flex: 1;
-      border: none;
-      width: 100%;
-      height: 100%;
-    }
-
   </style>
 </head>
 <body>
@@ -585,32 +514,7 @@
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
 
-  <!-- ── APP OVERLAY ── -->
-  <div id="app-overlay">
-    <div id="overlay-topbar">
-      <button id="overlay-back" onclick="closeApp()">
-        ← Return to Hub
-      </button>
-      <div id="overlay-title"></div>
-      <div id="overlay-logo">
-        <svg width="32" height="22" viewBox="0 0 500 340" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 28,232 A 218,162 0 0,1 462,208" fill="none" stroke="#94a3b8" stroke-width="11" stroke-linecap="round" opacity="0.75"/>
-          <polygon points="65,140 325,140 385,112 125,112" fill="#60a5fa"/>
-          <polygon points="65,140 325,140 325,252 65,252" fill="#2563eb"/>
-          <polygon points="325,140 385,112 385,224 325,252" fill="#1d4ed8"/>
-          <rect x="65" y="140" width="260" height="22" fill="#93c5fd" opacity="0.45"/>
-          <rect x="72" y="168" width="76" height="84" rx="2" fill="#b0bec5"/>
-          <rect x="158" y="168" width="76" height="84" rx="2" fill="#b0bec5"/>
-          <rect x="244" y="168" width="76" height="84" rx="2" fill="#90a4b4"/>
-          <path d="M 28,262 C 150,282 318,244 472,264" fill="none" stroke="#2563eb" stroke-width="7" stroke-linecap="round"/>
-        </svg>
-        <span>DEMO LOGISTICS</span>
-      </div>
-    </div>
-    <iframe id="app-frame" src="" title="App"></iframe>
-  </div>
-
-  <div class="wrapper">
+    <div class="wrapper">
 
     <!-- ── HEADER ── -->
     <header>
@@ -687,7 +591,7 @@
     <!-- ── ALL APPS UNIFIED GRID ── -->
     <div class="unified-grid">
 
-      <a href="javascript:void(0)" data-href="https://komsan-kongsuwan.github.io/3D-Warehouse/" data-appwin="app_warehouse" class="app-card accent-amber d1" onclick="openApp(event,this)">
+      <a href="https://komsan-kongsuwan.github.io/3D-Warehouse/" target="app_warehouse" class="app-card accent-amber d1">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -754,7 +658,7 @@
         </div>
       </a>
 
-      <a href="javascript:void(0)" data-href="https://komsan-kongsuwan.github.io/3D-Container-Plan/" data-appwin="app_container" class="app-card accent-blue d2" onclick="openApp(event,this)">
+      <a href="https://komsan-kongsuwan.github.io/3D-Container-Plan/" target="app_container" class="app-card accent-blue d2">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -806,7 +710,7 @@
         </div>
       </a>
 
-      <a href="javascript:void(0)" data-href="https://komsan-kongsuwan.github.io/3D-Palletizing-Plan/" data-appwin="app_pallet" class="app-card accent-green d3" onclick="openApp(event,this)">
+      <a href="https://komsan-kongsuwan.github.io/3D-Palletizing-Plan/" target="app_pallet" class="app-card accent-green d3">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -864,7 +768,7 @@
         </div>
       </a>
 
-      <a href="javascript:void(0)" data-href="https://komsan-kongsuwan.github.io/profit_and_loss/" data-appwin="app_pnl" class="app-card accent-rose d4" onclick="openApp(event,this)">
+      <a href="https://komsan-kongsuwan.github.io/profit_and_loss/" target="app_pnl" class="app-card accent-rose d4">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -906,7 +810,7 @@
         </div>
       </a>
 
-      <a href="javascript:void(0)" data-href="https://komsan-kongsuwan.github.io/demo-inventory-dashboard/" data-appwin="app_inventory" class="app-card accent-purple d5" onclick="openApp(event,this)">
+      <a href="https://komsan-kongsuwan.github.io/demo-inventory-dashboard/" target="app_inventory" class="app-card accent-purple d5">
         <div class="card-header">
           <div class="card-icon">📋</div>
           <div class="card-meta">
@@ -923,7 +827,7 @@
         </div>
       </a>
 
-      <a href="javascript:void(0)" data-href="https://komsan-kongsuwan.github.io/simulation-selective-rack/" data-appwin="app_rack" class="app-card accent-blue d6" onclick="openApp(event,this)">
+      <a href="https://komsan-kongsuwan.github.io/simulation-selective-rack/" target="app_rack" class="app-card accent-blue d6">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -977,7 +881,7 @@
       </a>
 
       <!-- Last row: 3 centered cards -->
-      <a href="javascript:void(0)" data-href="https://komsan.pythonanywhere.com/" data-appwin="app_quotation" data-newtab="true" class="app-card accent-amber" onclick="openApp(event,this)">
+      <a href="https://komsan.pythonanywhere.com/" target="app_quotation" class="app-card accent-amber">
         <div class="card-header">
           <div class="card-icon">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1008,7 +912,7 @@
         </div>
       </a>
 
-      <a href="javascript:void(0)" data-href="https://komsan-kongsuwan.github.io/DEMOFlow/" data-appwin="app_demoflow" class="app-card accent-purple" onclick="openApp(event,this)">
+      <a href="https://komsan-kongsuwan.github.io/DEMOFlow/" target="app_demoflow" class="app-card accent-purple">
         <div class="card-header">
           <div class="card-icon">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1041,7 +945,7 @@
         </div>
       </a>
 
-      <a href="javascript:void(0)" data-href="https://komsan-kongsuwan.github.io/Profit-and-Loss-Chat/" data-appwin="app_plchat" class="app-card accent-green" onclick="openApp(event,this)">
+      <a href="https://komsan-kongsuwan.github.io/Profit-and-Loss-Chat/" target="app_plchat" class="app-card accent-green">
         <div class="card-header">
           <div class="card-icon">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1071,7 +975,7 @@
       </a>
 
 
-      <a href="javascript:void(0)" data-href="https://komsan-kongsuwan.github.io/DEMO-Space/" data-appwin="app_demospace" class="app-card accent-rose" onclick="openApp(event,this)">
+      <a href="https://komsan-kongsuwan.github.io/DEMO-Space/" target="app_demospace" class="app-card accent-rose">
         <div class="card-header">
           <div class="card-icon">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1141,43 +1045,7 @@
 
   </div><!-- /wrapper -->
 
-  <script>
-    const overlay  = document.getElementById('app-overlay');
-    const frame    = document.getElementById('app-frame');
-    const titleEl  = document.getElementById('overlay-title');
 
-    function openApp(e, el) {
-      e.preventDefault();
-      e.stopPropagation();
-      const url     = el.getAttribute('data-href');
-      const title   = el.querySelector('.card-title')?.innerText || 'App';
-      const newTab  = el.getAttribute('data-newtab') === 'true';
-      if (!url) return false;
-
-      if (newTab) {
-        // Open in new tab (for apps that block iframes)
-        window.open(url, '_blank');
-        return false;
-      }
-
-      frame.src = url;
-      titleEl.textContent = title;
-      overlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-      return false;
-    }
-
-    function closeApp() {
-      overlay.classList.remove('active');
-      document.body.style.overflow = '';
-      setTimeout(function () { frame.src = ''; }, 300);
-    }
-
-    // Close with Escape key
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeApp();
-    });
-  </script>
 
 </body>
 </html>
