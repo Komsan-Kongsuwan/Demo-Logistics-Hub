@@ -977,7 +977,7 @@
       </a>
 
       <!-- Last row: 3 centered cards -->
-      <a href="javascript:void(0)" data-href="https://komsan.pythonanywhere.com/" data-appwin="app_quotation" class="app-card accent-amber" onclick="openApp(event,this)">
+      <a href="javascript:void(0)" data-href="https://komsan.pythonanywhere.com/" data-appwin="app_quotation" data-newtab="true" class="app-card accent-amber" onclick="openApp(event,this)">
         <div class="card-header">
           <div class="card-icon">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1003,7 +1003,7 @@
           Centralized quotation management portal covering Warehouse (WH), Sales (SALE), and Transport (TRN) modules. Shared user accounts with role-based access control.
         </p>
         <div class="card-footer">
-          <span class="card-chip">WH · SALE · TRN</span>
+          <span class="card-chip">WH · SALE · TRN &nbsp;↗</span>
           <div class="card-arrow">→</div>
         </div>
       </a>
@@ -1149,10 +1149,18 @@
     function openApp(e, el) {
       e.preventDefault();
       e.stopPropagation();
-      const url   = el.getAttribute('data-href');
-      const title = el.querySelector('.card-title')?.innerText || 'App';
+      const url     = el.getAttribute('data-href');
+      const title   = el.querySelector('.card-title')?.innerText || 'App';
+      const newTab  = el.getAttribute('data-newtab') === 'true';
       if (!url) return false;
-      frame.src  = url;
+
+      if (newTab) {
+        // Open in new tab (for apps that block iframes)
+        window.open(url, '_blank');
+        return false;
+      }
+
+      frame.src = url;
       titleEl.textContent = title;
       overlay.classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -1162,7 +1170,6 @@
     function closeApp() {
       overlay.classList.remove('active');
       document.body.style.overflow = '';
-      // Clear iframe after transition so it stops loading
       setTimeout(function () { frame.src = ''; }, 300);
     }
 
