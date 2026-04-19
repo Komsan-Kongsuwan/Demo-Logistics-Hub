@@ -97,8 +97,15 @@
 
     /* ── HEADER ── */
     header {
-      padding: 20px 0 0;
-      text-align: center;
+      padding: 20px 0 16px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .header-text {
+      flex: 1;
     }
 
     .logo-badge {
@@ -151,8 +158,8 @@
     .subtitle {
       font-size: 0.88rem;
       color: var(--dim);
-      max-width: 440px;
-      margin: 0 auto 16px;
+      max-width: 480px;
+      margin: 0 0 0;
       line-height: 1.55;
       font-weight: 300;
       animation: fadeDown 0.7s 0.2s ease both;
@@ -504,6 +511,8 @@
       .unified-grid { grid-template-columns: 1fr; }
       h1 { font-size: 2rem; }
       .wrapper { padding: 0 16px; }
+      header { flex-direction: column; text-align: center; }
+      .subtitle { margin: 0 auto; }
     }
   </style>
 </head>
@@ -519,22 +528,16 @@
     <!-- ── HEADER ── -->
     <header>
 
-      <!-- Logo with embedded text -->
-      <div class="logo-svg-wrap" style="margin-bottom:10px;">
-        <svg width="200" height="120" viewBox="0 0 500 390" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Gray arc swoosh above -->
+      <!-- Logo (left) -->
+      <div class="logo-svg-wrap" style="margin-bottom:0; flex-shrink:0;">
+        <svg width="160" height="96" viewBox="0 0 500 390" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M 28,232 A 218,162 0 0,1 462,208" fill="none" stroke="#94a3b8" stroke-width="11" stroke-linecap="round" opacity="0.75"/>
           <path d="M 28,232 A 218,162 0 0,1 462,208" fill="none" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
-          <!-- ROOF -->
           <polygon points="65,140 325,140 385,112 125,112" fill="#60a5fa"/>
-          <!-- FRONT FACE -->
           <polygon points="65,140 325,140 325,252 65,252" fill="#2563eb"/>
-          <!-- SIDE FACE -->
           <polygon points="325,140 385,112 385,224 325,252" fill="#1d4ed8"/>
-          <!-- Top strip window band -->
           <rect x="65" y="140" width="260" height="22" fill="#93c5fd" opacity="0.45"/>
           <polygon points="325,140 385,112 385,128 325,162" fill="#93c5fd" opacity="0.25"/>
-          <!-- GARAGE DOOR 1 -->
           <rect x="72" y="168" width="76" height="84" rx="2" fill="#b0bec5"/>
           <line x1="72" y1="182" x2="148" y2="182" stroke="#78909c" stroke-width="1.2"/>
           <line x1="72" y1="196" x2="148" y2="196" stroke="#78909c" stroke-width="1.2"/>
@@ -542,7 +545,6 @@
           <line x1="72" y1="224" x2="148" y2="224" stroke="#78909c" stroke-width="1.2"/>
           <line x1="72" y1="238" x2="148" y2="238" stroke="#78909c" stroke-width="1.2"/>
           <line x1="110" y1="168" x2="110" y2="252" stroke="#78909c" stroke-width="0.8" opacity="0.5"/>
-          <!-- GARAGE DOOR 2 -->
           <rect x="158" y="168" width="76" height="84" rx="2" fill="#b0bec5"/>
           <line x1="158" y1="182" x2="234" y2="182" stroke="#78909c" stroke-width="1.2"/>
           <line x1="158" y1="196" x2="234" y2="196" stroke="#78909c" stroke-width="1.2"/>
@@ -550,7 +552,6 @@
           <line x1="158" y1="224" x2="234" y2="224" stroke="#78909c" stroke-width="1.2"/>
           <line x1="158" y1="238" x2="234" y2="238" stroke="#78909c" stroke-width="1.2"/>
           <line x1="196" y1="168" x2="196" y2="252" stroke="#78909c" stroke-width="0.8" opacity="0.5"/>
-          <!-- GARAGE DOOR 3 -->
           <rect x="244" y="168" width="76" height="84" rx="2" fill="#90a4b4"/>
           <line x1="244" y1="182" x2="320" y2="182" stroke="#607080" stroke-width="1.2"/>
           <line x1="244" y1="196" x2="320" y2="196" stroke="#607080" stroke-width="1.2"/>
@@ -558,34 +559,26 @@
           <line x1="244" y1="224" x2="320" y2="224" stroke="#607080" stroke-width="1.2"/>
           <line x1="244" y1="238" x2="320" y2="238" stroke="#607080" stroke-width="1.2"/>
           <line x1="282" y1="168" x2="282" y2="252" stroke="#607080" stroke-width="0.8" opacity="0.5"/>
-          <!-- SIDE partial door -->
           <polygon points="325,168 365,150 365,218 325,236" fill="#8fa8c0" opacity="0.6"/>
           <line x1="325" y1="181" x2="365" y2="163" stroke="#607080" stroke-width="1" opacity="0.7"/>
           <line x1="325" y1="197" x2="365" y2="179" stroke="#607080" stroke-width="1" opacity="0.7"/>
           <line x1="325" y1="213" x2="365" y2="195" stroke="#607080" stroke-width="1" opacity="0.7"/>
-          <!-- Bottom edge -->
           <line x1="65" y1="252" x2="325" y2="252" stroke="#1e40af" stroke-width="2" opacity="0.5"/>
-          <!-- Blue wave swoosh -->
           <path d="M 28,262 C 150,282 318,244 472,264" fill="none" stroke="#2563eb" stroke-width="7" stroke-linecap="round"/>
           <path d="M 28,262 C 150,282 318,244 472,264" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
-          <!-- DEMO LOGISTICS text inside logo -->
-          <text x="250" y="308"
-            text-anchor="middle"
-            font-family="'Exo 2', Georgia, sans-serif"
-            font-weight="900"
-            font-size="36"
-            fill="#1e293b"
-            letter-spacing="3">DEMO LOGISTICS</text>
+          <text x="250" y="308" text-anchor="middle" font-family="'Exo 2', Georgia, sans-serif" font-weight="900" font-size="36" fill="#1e293b" letter-spacing="3">DEMO LOGISTICS</text>
         </svg>
       </div>
 
-      <!-- Title: all on one line -->
-      <h1>All Tools. <span class="line-accent" style="display:inline;">One Place.</span></h1>
+      <!-- Text (right) -->
+      <div class="header-text">
+        <h1 style="margin-bottom:6px;">All Tools. <span class="line-accent" style="display:inline;">One Place.</span></h1>
+        <p class="subtitle">
+          A unified gateway to your logistics intelligence suite — from 3D warehouse
+          visualization to financial analytics and quotation management.
+        </p>
+      </div>
 
-      <p class="subtitle">
-        A unified gateway to your logistics intelligence suite — from 3D warehouse
-        visualization to financial analytics and quotation management.
-      </p>
     </header>
 
     <!-- ── ALL APPS UNIFIED GRID ── -->
