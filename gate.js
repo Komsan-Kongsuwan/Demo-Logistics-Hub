@@ -5,7 +5,7 @@
      https://komsan-kongsuwan.github.io/YOUR-HUB-REPO/gate.js
 
    Then add ONE line to each target app, right after <body>:
-     <script src="https://komsan-kongsuwan.github.io/YOUR-HUB-REPO/gate.js"></script>
+     <script src="https://komsan-kongsuwan.github.io/Demo-Logistics-Hub/gate.js"></script>
 
    To update the message, hub URL, or time window later,
    edit only THIS file — every app picks up the change.
