@@ -12,7 +12,7 @@
    ============================================================ */
 
 (function () {
-  var HUB_URL    = "https://komsan-kongsuwan.github.io/YOUR-HUB-REPO/"; // ← set your Hub URL
+  var HUB_URL    = "https://komsan-kongsuwan.github.io/Demo-Logistics-Hub/"; // ← set your Hub URL
   var MAX_AGE_MS = 60000; // token valid for 60 seconds
 
   var params = new URLSearchParams(window.location.search);
