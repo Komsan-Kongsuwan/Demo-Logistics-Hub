@@ -2,7 +2,7 @@
    DEMO LOGISTICS — HUB ACCESS GATE (shared script)
 
    Host this file alongside your Hub, e.g.:
-     https://komsan-kongsuwan.github.io/YOUR-HUB-REPO/gate.js
+     https://komsan-kongsuwan.github.io/Demo-Logistics-Hub/gate.js
 
    Then add ONE line to each target app, right after <body>:
      <script src="https://komsan-kongsuwan.github.io/Demo-Logistics-Hub/gate.js"></script>
