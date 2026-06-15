@@ -584,7 +584,7 @@
     <!-- ── ALL APPS UNIFIED GRID ── -->
     <div class="unified-grid">
 
-      <a href="https://komsan-kongsuwan.github.io/3D-Warehouse/" target="app_warehouse" class="app-card accent-amber d1">
+      <a href="https://komsan-kongsuwan.github.io/3D-Warehouse/" target="app_warehouse" class="app-card accent-amber d1" onclick="return addHubToken(this)">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -651,7 +651,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/3D-Container-Plan/" target="app_container" class="app-card accent-blue d2">
+      <a href="https://komsan-kongsuwan.github.io/3D-Container-Plan/" target="app_container" class="app-card accent-blue d2" onclick="return addHubToken(this)">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -703,7 +703,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/3D-Palletizing-Plan/" target="app_pallet" class="app-card accent-green d3">
+      <a href="https://komsan-kongsuwan.github.io/3D-Palletizing-Plan/" target="app_pallet" class="app-card accent-green d3" onclick="return addHubToken(this)">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -761,7 +761,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/profit_and_loss/" target="app_pnl" class="app-card accent-rose d4">
+      <a href="https://komsan-kongsuwan.github.io/profit_and_loss/" target="app_pnl" class="app-card accent-rose d4" onclick="return addHubToken(this)">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -803,7 +803,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/demo-inventory-dashboard/" target="app_inventory" class="app-card accent-purple d5">
+      <a href="https://komsan-kongsuwan.github.io/demo-inventory-dashboard/" target="app_inventory" class="app-card accent-purple d5" onclick="return addHubToken(this)">
         <div class="card-header">
           <div class="card-icon">📋</div>
           <div class="card-meta">
@@ -820,7 +820,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/simulation-selective-rack/" target="app_rack" class="app-card accent-blue d6">
+      <a href="https://komsan-kongsuwan.github.io/simulation-selective-rack/" target="app_rack" class="app-card accent-blue d6" onclick="return addHubToken(this)">
         <div class="card-header">
           <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -874,7 +874,7 @@
       </a>
 
       <!-- Last row: 3 centered cards -->
-      <a href="https://komsan.pythonanywhere.com/" target="app_quotation" class="app-card accent-amber">
+      <a href="https://komsan.pythonanywhere.com/" target="app_quotation" class="app-card accent-amber" onclick="return addHubToken(this)">
         <div class="card-header">
           <div class="card-icon">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -905,7 +905,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/DEMOFlow/" target="app_demoflow" class="app-card accent-purple">
+      <a href="https://komsan-kongsuwan.github.io/DEMOFlow/" target="app_demoflow" class="app-card accent-purple" onclick="return addHubToken(this)">
         <div class="card-header">
           <div class="card-icon">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -938,7 +938,7 @@
         </div>
       </a>
 
-      <a href="https://komsan-kongsuwan.github.io/Profit-and-Loss-Chat/" target="app_plchat" class="app-card accent-green">
+      <a href="https://komsan-kongsuwan.github.io/Profit-and-Loss-Chat/" target="app_plchat" class="app-card accent-green" onclick="return addHubToken(this)">
         <div class="card-header">
           <div class="card-icon">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -968,7 +968,7 @@
       </a>
 
 
-      <a href="https://komsan-kongsuwan.github.io/DEMO-Space/" target="app_demospace" class="app-card accent-rose">
+      <a href="https://komsan-kongsuwan.github.io/DEMO-Space/" target="app_demospace" class="app-card accent-rose" onclick="return addHubToken(this)">
         <div class="card-header">
           <div class="card-icon">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1038,7 +1038,16 @@
 
   </div><!-- /wrapper -->
 
-
+  <script>
+    // Append a short-lived access token to the app URL so target apps
+    // can verify the user came from this Hub (not a direct/bookmarked link).
+    function addHubToken(el) {
+      const base = el.getAttribute('href').split('?')[0];
+      const sep  = '?';
+      el.href = base + sep + 'dlhub=1&t=' + Date.now();
+      return true; // allow normal navigation to continue
+    }
+  </script>
 
 </body>
 </html>
